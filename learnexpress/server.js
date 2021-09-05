@@ -1,17 +1,20 @@
 const express = require('express');
 const app = express();
+const routes = require('./routes')
+const path = require('path');
 
-app.get('/', (req, res) => {
-  res.send('<form action="/" method="POST"><input type="text" name="name"><button>Enviar</button></form>');
-});
+// query string: começa com ? e adiciona com &
+// params: parametros da url, pdoendo ser opcional 
+// ? === opcional
 
-app.post('/', (req, res) => {
-  res.send('Formulário recebido');
-})
+app.use(express.urlencoded({ extended: true }));
 
-app.get('/contact', (req, res) => {
-  res.send('Contact')
-})
+app.use(express.static(path.resolve(__dirname, 'public')));
+
+app.set('views', path.resolve(__dirname, 'src', 'views'));
+app.set('view engine', 'ejs')
+
+app.use(routes)
 
 app.listen(3333, () => {
   console.log('Executando na porta 3333');
